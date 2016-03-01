@@ -1,11 +1,20 @@
 package com.sinocr.tj.dd.explore.springmvc.domain;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+
 public class User {
 
 	private String userId;
 	private String userName;
 	private String password;
 	private String realName;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birthday;
+	@NumberFormat(pattern = "#,###.##")
+	private long salary;
 
 	public String getUserId() {
 		return userId;
@@ -37,6 +46,22 @@ public class User {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(long salary) {
+		this.salary = salary;
 	}
 
 }
