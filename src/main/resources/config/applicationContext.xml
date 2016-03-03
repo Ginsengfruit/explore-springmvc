@@ -15,7 +15,8 @@
 	<context:component-scan base-package="com.sinocr.tj.dd.explore.springmvc.service" />
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+		p:viewClass="org.springframework.web.servlet.view.JstlView" p:prefix="/WEB-INF/views/"
+		p:suffix=".jsp" />
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="converters">
@@ -25,5 +26,28 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="messgaeSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource"
+		p:basename="config/i18n/messages" />
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"
+		p:templateLoaderPath="/WEB-INF/ftl" p:defaultEncoding="UTF-8">
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="classic_compatible">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+		p:order="5" p:suffix=".ftl" p:contentType="text/html;charset=utf-8" />
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="10" />
+	<bean id="userListExcel"
+		class="com.sinocr.tj.dd.explore.springmvc.web.UserListExcelView" />
+	
+
+
+
 
 </beans>

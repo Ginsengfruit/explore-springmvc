@@ -1,6 +1,12 @@
 package com.sinocr.tj.dd.explore.springmvc.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,6 +105,105 @@ public class UserController {
 		modelMap.put("user", user);
 		logger.info("user: " + user.getUserName() + " : " + user.getPassword() + " : " + user.getRealName());
 		return "/user/showUser";
+	}
+
+	@RequestMapping(value = "/handle91")
+	public String handle91(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "/user/rergister3";
+		} else {
+			return "/user/showUser";
+		}
+	}
+
+	@RequestMapping(value = "/handle92")
+	public String handle92(@ModelAttribute("user") User user, BindingResult bindingResult) {
+		ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "userName", "required");
+		if ("aaaa".equalsIgnoreCase(user.getUserName())) {
+			bindingResult.rejectValue("userName", "reserved");
+		}
+		if (bindingResult.hasErrors()) {
+			return "/user/register4";
+		} else {
+			return "/user/showUser";
+		}
+	}
+
+	@RequestMapping(value = "/showUserList")
+	public String showUserList(ModelMap mm) {
+		Calendar calendar = new GregorianCalendar();
+		List<User> userList = new ArrayList<>();
+		User user1 = new User();
+		user1.setUserName("tom");
+		user1.setRealName("Tom Hanks");
+		calendar.set(1981, 1, 1);
+		user1.setBirthday(calendar.getTime());
+		User user2 = new User();
+		user2.setUserName("john");
+		user2.setRealName("John Cena");
+		user2.setBirthday(calendar.getTime());
+		userList.add(user1);
+		userList.add(user2);
+		mm.addAttribute("userList", userList);
+		return "user/userList";
+	}
+
+	@RequestMapping(value = "/showUserListByFtl")
+	public String showUserListInFtl(ModelMap mm) {
+		logger.info("showUserListInFtl called!");
+		Calendar calendar = new GregorianCalendar();
+		List<User> userList = new ArrayList<>();
+		User user1 = new User();
+		user1.setUserName("tom");
+		user1.setRealName("Tom Hanks");
+		calendar.set(1981, 1, 1);
+		user1.setBirthday(calendar.getTime());
+		User user2 = new User();
+		user2.setUserName("john");
+		user2.setRealName("John Cena");
+		user2.setBirthday(calendar.getTime());
+		userList.add(user1);
+		userList.add(user2);
+		mm.addAttribute("userList", userList);
+		return "userListFtl";
+	}
+
+	@RequestMapping(value = "/showUserListByXls")
+	public String showUserListInExcel(ModelMap mm) {
+		Calendar calendar = new GregorianCalendar();
+		List<User> userList = new ArrayList<>();
+		User user1 = new User();
+		user1.setUserName("tom");
+		user1.setRealName("Tom Hanks");
+		calendar.set(1981, 1, 1);
+		user1.setBirthday(calendar.getTime());
+		User user2 = new User();
+		user2.setUserName("john");
+		user2.setRealName("John Cena");
+		user2.setBirthday(calendar.getTime());
+		userList.add(user1);
+		userList.add(user2);
+		mm.addAttribute("userList", userList);
+		return "userListExcel";
+	}
+
+	@RequestMapping(value = "/showUserListByPdf")
+	public String showUserListInPdf(ModelMap mm) {
+		Calendar calendar = new GregorianCalendar();
+		List<User> userList = new ArrayList<>();
+		User user1 = new User();
+		user1.setUserName("tom");
+		user1.setRealName("Tom Hanks");
+		calendar.set(1981, 1, 1);
+		user1.setBirthday(calendar.getTime());
+		User user2 = new User();
+		user2.setUserName("john");
+		user2.setRealName("John Cena");
+		user2.setBirthday(calendar.getTime());
+		userList.add(user1);
+		userList.add(user2);
+		mm.addAttribute("userList", userList);
+		return "userListPdf";
 	}
 
 }

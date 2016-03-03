@@ -43,6 +43,7 @@ public class UserControllerTest {
 		Resource outFile = new FileSystemResource("d:/image_copy.jpg");
 		FileCopyUtils.copy(response, outFile.getFile());
 	}
+
 	@Test
 	public void testhandle51() throws IOException {
 		RestTemplate restTemplate = buildRestTemplate();
@@ -76,6 +77,21 @@ public class UserControllerTest {
 		MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
 		restTemplate.getMessageConverters().add(jsonConverter);
 		return restTemplate;
+	}
+
+	@Test
+	public void testhandle82() {
+		RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+		form.add("userName", "tom");
+		form.add("password", "123456");
+		form.add("age", "45");
+		form.add("birthday", "1980-01-01");
+		form.add("salary", "4,5000.00");
+		String html = restTemplate.postForObject("http://localhost:8080/explore-springmvc/user/handle82.html", form,
+				String.class);
+		Assert.assertNotNull(html);
+		Assert.assertTrue(html.indexOf("tom") > -1);
 	}
 
 }
